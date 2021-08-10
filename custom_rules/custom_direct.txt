@@ -3,4 +3,5 @@
 
 payload:
   - '+.baidu.com'
+  - '+.banofinancial.com'
   
