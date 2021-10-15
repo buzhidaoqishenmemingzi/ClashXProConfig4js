@@ -4,4 +4,5 @@
 payload:
   - '+.baidu.com'
   - '+.banofinancial.com'
+  - '+.66zhang.com'
   
