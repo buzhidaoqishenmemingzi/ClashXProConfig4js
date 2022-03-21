@@ -6,3 +6,4 @@ payload:
   - '+.sketch.cloud'
   - '+.atlassian.net'
   - '+.v2ex.com'
+  - '+.github.com'
