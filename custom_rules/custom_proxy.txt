@@ -5,5 +5,8 @@ payload:
   - '+.sketch.com'
   - '+.sketch.cloud'
   - '+.atlassian.net'
+  - '+.banofinancial.com'
+  - '+.nium.com'
   - '+.v2ex.com'
   - '+.github.com'
+  - '+.redisson.org'
