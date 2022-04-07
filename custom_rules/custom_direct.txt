@@ -8,4 +8,5 @@ payload:
   - '+.banotrade.com'
   - '+.66zhang.com'
   - '+.apple.com'
-  - '+.llvip.net'
+  - '+.sentry.llvip.net'
+
