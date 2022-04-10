@@ -9,4 +9,4 @@ payload:
   - '+.66zhang.com'
   - '+.apple.com'
   - '+.sentry.llvip.net'
-
+  - '+.aaa.net'
