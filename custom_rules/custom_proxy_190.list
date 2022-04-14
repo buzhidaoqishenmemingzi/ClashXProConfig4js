@@ -1,0 +1,16 @@
+# 自定义强制走代理
+
+# example
+# DOMAIN,apple.comscoreresearch.com
+# DOMAIN-SUFFIX,aaplimg.com
+# IP-CIDR,17.0.0.0/8,no-resolve
+
+
+DOMAIN-SUFFIX,sketch.com
+DOMAIN-SUFFIX,sketch.cloud
+DOMAIN-SUFFIX,atlassian.net
+DOMAIN-SUFFIX,banofinancial.com
+DOMAIN-SUFFIX,nium.com
+DOMAIN-SUFFIX,v2ex.com
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,redisson.org

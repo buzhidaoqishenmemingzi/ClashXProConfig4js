@@ -1,0 +1,12 @@
+# 自定义强制直连
+
+# example
+# DOMAIN,apple.comscoreresearch.com
+# DOMAIN-SUFFIX,aaplimg.com
+# IP-CIDR,17.0.0.0/8,no-resolve
+
+DOMAIN-SUFFIX,bano.co
+DOMAIN-SUFFIX,banotrade.com
+DOMAIN-SUFFIX,66zhang.com
+DOMAIN-SUFFIX,llvip.net
+
