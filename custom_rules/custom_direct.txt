@@ -10,3 +10,5 @@ payload:
   - '+.apple.com'
   - '+.sentry.llvip.net'
   - '+.aaa.net'
+  - '+.aaa.net'
+  - '+.appsflyer.com'
