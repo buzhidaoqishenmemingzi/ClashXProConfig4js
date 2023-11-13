@@ -9,3 +9,4 @@ payload:
   - '+.v2ex.com'
   - '+.github.com'
   - '+.redisson.org'
+  - '+.openai.com'
