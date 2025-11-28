@@ -95,7 +95,7 @@ proxies:
   -
     name: 'letsvpn'
     type: socks5
-    server: 192.168.55.161
+    server: 192.168.55.188
     port: 7897
 
 proxy-groups:
