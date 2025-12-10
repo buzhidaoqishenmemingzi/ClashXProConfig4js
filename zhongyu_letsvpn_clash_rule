@@ -131,10 +131,11 @@ rules:
   - DOMAIN-SUFFIX,smtp,DIRECT
   - DOMAIN-KEYWORD,aria2,DIRECT
 
-  - DOMAIN-SUFFIX,66zhang.com,💼公司VPN
-  - DOMAIN-SUFFIX,bano.co,💼公司VPN
-  - DOMAIN-SUFFIX,llvip.net,💼公司VPN
-
+  - DOMAIN-SUFFIX,66zhang.com,DIRECT
+  - DOMAIN-SUFFIX,bano.co,DIRECT
+  - DOMAIN-SUFFIX,llvip.net,DIRECT
+  - DOMAIN-SUFFIX,boltfaas.com,DIRECT
+  - DOMAIN-SUFFIX,boltbaas.com,DIRECT
 
 
   
