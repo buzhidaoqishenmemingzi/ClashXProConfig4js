@@ -2,6 +2,7 @@
 # example:https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/google.txt
 
 payload:
+  - '+.claude.com'
   - '+.sketch.com'
   - '+.sketch.cloud'
   - '+.atlassian.net'

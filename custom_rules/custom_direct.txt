@@ -3,12 +3,15 @@
 #  - '+.testadmin.banofinancial.com'
 
 payload:
+  - '+.build.app'
+  - '+.boltfaas.com'
+  - '+.boltbaas.com'
+  - '54.253.161.136/32'
   - '+.baidu.com'
   - '+.bano.co'
   - '+.banotrade.com'
   - '+.66zhang.com'
   - '+.apple.com'
   - '+.sentry.llvip.net'
-  - '+.aaa.net'
   - '+.aaa.net'
   - '+.appsflyer.com'
