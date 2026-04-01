@@ -71,27 +71,224 @@ proxy-groups:
       - DIRECT
 
 # =========================================================
-# 规则逻辑
+# 规则集（远程规则源，与 unified_config.ini 共享同一套）
+# =========================================================
+rule-providers:
+  # -- 自定义 --
+  custom-direct:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_direct_190.list"
+    path: ./ruleset/custom-direct.yaml
+    interval: 86400
+  custom-proxy:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_proxy_190.list"
+    path: ./ruleset/custom-proxy.yaml
+    interval: 86400
+
+  # -- 广告屏蔽（ACL4SSR 标准三件套 + Loyalsoldier 补充）--
+  ban-ad:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list"
+    path: ./ruleset/ban-ad.yaml
+    interval: 86400
+  ban-program-ad:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list"
+    path: ./ruleset/ban-program-ad.yaml
+    interval: 86400
+  ban-easylist-china:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyListChina.list"
+    path: ./ruleset/ban-easylist-china.yaml
+    interval: 86400
+  reject-domain:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    path: ./ruleset/reject-domain.yaml
+    interval: 86400
+
+  # -- AI 服务（blackmatrix7）--
+  openai:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.list"
+    path: ./ruleset/openai.yaml
+    interval: 86400
+  claude:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.list"
+    path: ./ruleset/claude.yaml
+    interval: 86400
+  gemini:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.list"
+    path: ./ruleset/gemini.yaml
+    interval: 86400
+  copilot:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.list"
+    path: ./ruleset/copilot.yaml
+    interval: 86400
+
+  # -- 流媒体（blackmatrix7 + ACL4SSR 兜底）--
+  netflix:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.list"
+    path: ./ruleset/netflix.yaml
+    interval: 86400
+  youtube:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list"
+    path: ./ruleset/youtube.yaml
+    interval: 86400
+  spotify:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.list"
+    path: ./ruleset/spotify.yaml
+    interval: 86400
+  tiktok:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.list"
+    path: ./ruleset/tiktok.yaml
+    interval: 86400
+  proxy-media:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list"
+    path: ./ruleset/proxy-media.yaml
+    interval: 86400
+
+  # -- Telegram --
+  telegram:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list"
+    path: ./ruleset/telegram.yaml
+    interval: 86400
+
+  # -- 苹果服务 --
+  apple:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list"
+    path: ./ruleset/apple.yaml
+    interval: 86400
+
+  # -- 国内直连 --
+  google-cn:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GoogleCN.list"
+    path: ./ruleset/google-cn.yaml
+    interval: 86400
+  china-domain:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+    path: ./ruleset/china-domain.yaml
+    interval: 86400
+  china-company-ip:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+    path: ./ruleset/china-company-ip.yaml
+    interval: 86400
+  china-ip:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaIp.list"
+    path: ./ruleset/china-ip.yaml
+    interval: 86400
+  download:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
+    path: ./ruleset/download.yaml
+    interval: 86400
+  lan:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
+    path: ./ruleset/lan.yaml
+    interval: 86400
+
+  # -- 代理（GFW）--
+  proxy-gfw:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list"
+    path: ./ruleset/proxy-gfw.yaml
+    interval: 86400
+  proxy-lite:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyLite.list"
+    path: ./ruleset/proxy-lite.yaml
+    interval: 86400
+
+# =========================================================
+# 规则逻辑（优先级从上到下）
 # =========================================================
 rules:
-  # 1. 基础绕过
-  - DOMAIN-KEYWORD,aria2,DIRECT
-  - DOMAIN-SUFFIX,smtp,DIRECT
-  - DOMAIN-SUFFIX,66zhang.com,DIRECT
-  - DOMAIN-SUFFIX,bano.co,DIRECT
-  - DOMAIN-SUFFIX,llvip.net,DIRECT
-  - DOMAIN-SUFFIX,boltfaas.com,DIRECT
-  - DOMAIN-SUFFIX,boltbaas.com,DIRECT
+  # ---- 1. 自定义规则（最高优先级）----
+  - RULE-SET,custom-direct,DIRECT
+  - RULE-SET,custom-proxy,🚀 代理出口
 
-  # 2. 局域网直连
-  - GEOIP,LAN,DIRECT
-  
-  # 3. 广告/测速屏蔽 (可选)
-  - GEOSITE,category-ads-all,REJECT
+  # ---- 2. 局域网直连 ----
+  - RULE-SET,lan,DIRECT
 
-  # 4. 常见的中国流量：直接走直连
-  - GEOSITE,cn,DIRECT
+  # ---- 3. 广告屏蔽 ----
+  - RULE-SET,ban-ad,REJECT
+  - RULE-SET,ban-program-ad,REJECT
+  - RULE-SET,ban-easylist-china,REJECT
+  - RULE-SET,reject-domain,REJECT
+
+  # ---- 4. AI 服务走代理 ----
+  - RULE-SET,openai,🚀 代理出口
+  - RULE-SET,claude,🚀 代理出口
+  - RULE-SET,gemini,🚀 代理出口
+  - RULE-SET,copilot,🚀 代理出口
+
+  # ---- 5. 流媒体走代理 ----
+  - RULE-SET,netflix,🚀 代理出口
+  - RULE-SET,youtube,🚀 代理出口
+  - RULE-SET,spotify,🚀 代理出口
+  - RULE-SET,tiktok,🚀 代理出口
+  - RULE-SET,proxy-media,🚀 代理出口
+
+  # ---- 6. Telegram 走代理 ----
+  - RULE-SET,telegram,🚀 代理出口
+
+  # ---- 7. 苹果服务直连 ----
+  - RULE-SET,apple,DIRECT
+
+  # ---- 8. 国内直连 ----
+  - RULE-SET,google-cn,DIRECT
+  - RULE-SET,china-domain,DIRECT
+  - RULE-SET,china-company-ip,DIRECT
+  - RULE-SET,china-ip,DIRECT
+  - RULE-SET,download,DIRECT
+
+  # ---- 9. GFW 走代理 ----
+  - RULE-SET,proxy-gfw,🚀 代理出口
+  - RULE-SET,proxy-lite,🚀 代理出口
+
+  # ---- 10. 兜底 GEOIP 补漏 ----
   - GEOIP,CN,DIRECT
 
-  # 5. 最后兜底
-  - MATCH,🚀 代理出口
+  # ---- 11. 默认直连 ----
+  - MATCH,DIRECT
