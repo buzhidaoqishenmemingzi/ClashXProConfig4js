@@ -65,6 +65,7 @@ proxies:
 proxy-groups:
   - name: 🚀 代理出口
     type: select
+    udp: true
     proxies:
       - 'letsvpn'
       - DIRECT
