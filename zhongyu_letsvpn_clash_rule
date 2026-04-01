@@ -78,13 +78,13 @@ rule-providers:
   custom-direct:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_direct_190.list"
+    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_direct.yaml"
     path: ./ruleset/custom-direct.yaml
     interval: 86400
   custom-proxy:
     type: http
     behavior: classical
-    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_proxy_190.list"
+    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_proxy.yaml"
     path: ./ruleset/custom-proxy.yaml
     interval: 86400
 
