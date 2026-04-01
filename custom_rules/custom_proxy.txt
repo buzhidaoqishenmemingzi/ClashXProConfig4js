@@ -3,6 +3,8 @@
 
 payload:
   - '+.claude.com'
+  - '+.claudeusercontent.com'
+  - '+.us-east-1.amazonaws.com'
   - '+.sketch.com'
   - '+.sketch.cloud'
   - '+.atlassian.net'
