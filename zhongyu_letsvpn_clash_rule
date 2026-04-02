@@ -22,59 +22,67 @@ tun:
   dns-hierarchical: true
 
 # =========================================================
-# DNS 优化 (精简了冗余的 nameserver-policy)
+# DNS 优化
 # =========================================================
 dns:
   enable: true
   listen: '127.0.0.1:8853'
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  
+
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  
+
   nameserver:
     - 'https://dns.alidns.com/dns-query'
     - 'https://doh.pub/dns-query'
-    
+
   fallback:
     - 'https://dns.google/dns-query'
     - 'https://1.1.1.1/dns-query'
-  
-  # 使用 geosite 代替手动列出几百个域名，逻辑更强
+
   nameserver-policy:
     "geosite:cn": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"]
     "geosite:category-games@cn": [223.5.5.5]
 
 # =========================================================
-# 节点与认证 (加上了你刚才要求的密码)
+# 节点
 # =========================================================
 proxies:
   - name: 'letsvpn'
     type: socks5
     server: 192.168.55.188
     port: 7897
-    username: "miniletsvpn"           # 需在 188 机器同步设置
-    password: "ehfisBzi5Ac9uLb"    # 需在 188 机器同步设置
+    username: "miniletsvpn"
+    password: "ehfisBzi5Ac9uLb"
     udp: true
 
 # =========================================================
-# 策略组 (极简单组流)
+# 策略组（仅两组）
 # =========================================================
 proxy-groups:
-  - name: 🚀 代理出口
+  # a. 代理出口：固定走 letsvpn，也可手动切直连
+  - name: Proxy
     type: select
     udp: true
     proxies:
       - 'letsvpn'
       - DIRECT
 
+  # b. 漏网之鱼：未匹配流量，默认直连，可随时切换
+  - name: 漏网之鱼
+    type: select
+    udp: true
+    proxies:
+      - DIRECT
+      - 'letsvpn'
+
 # =========================================================
-# 规则集（远程规则源，与 unified_config.ini 共享同一套）
+# 规则集
 # =========================================================
 rule-providers:
-  # -- 自定义 --
+  # ---- 自定义（最高优先级）----
   custom-direct:
     type: http
     behavior: classical
@@ -88,7 +96,15 @@ rule-providers:
     path: ./ruleset/custom-proxy.yaml
     interval: 86400
 
-  # -- 广告屏蔽（ACL4SSR 标准三件套 + Loyalsoldier 补充）--
+  # ---- 局域网 ----
+  lan:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
+    path: ./ruleset/lan.yaml
+    interval: 86400
+
+  # ---- 广告屏蔽 ----
   ban-ad:
     type: http
     behavior: classical
@@ -114,7 +130,7 @@ rule-providers:
     path: ./ruleset/reject-domain.yaml
     interval: 86400
 
-  # -- AI 服务（blackmatrix7）--
+  # ---- AI 服务 ----
   openai:
     type: http
     behavior: classical
@@ -140,7 +156,7 @@ rule-providers:
     path: ./ruleset/copilot.yaml
     interval: 86400
 
-  # -- 流媒体（blackmatrix7 + ACL4SSR 兜底）--
+  # ---- 流媒体 ----
   netflix:
     type: http
     behavior: classical
@@ -172,15 +188,29 @@ rule-providers:
     path: ./ruleset/proxy-media.yaml
     interval: 86400
 
-  # -- Telegram --
+  # ---- 社交 ----
   telegram:
     type: http
     behavior: classical
     url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list"
     path: ./ruleset/telegram.yaml
     interval: 86400
+  twitter:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list"
+    path: ./ruleset/twitter.yaml
+    interval: 86400
 
-  # -- 苹果服务 --
+  # ---- 开发工具（走代理）----
+  github:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.list"
+    path: ./ruleset/github.yaml
+    interval: 86400
+
+  # ---- 苹果服务 ----
   apple:
     type: http
     behavior: classical
@@ -188,7 +218,15 @@ rule-providers:
     path: ./ruleset/apple.yaml
     interval: 86400
 
-  # -- 国内直连 --
+  # ---- 微软服务（直连）----
+  microsoft:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.list"
+    path: ./ruleset/microsoft.yaml
+    interval: 86400
+
+  # ---- 国内直连 ----
   google-cn:
     type: http
     behavior: classical
@@ -219,14 +257,8 @@ rule-providers:
     url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
     path: ./ruleset/download.yaml
     interval: 86400
-  lan:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
-    path: ./ruleset/lan.yaml
-    interval: 86400
 
-  # -- 代理（GFW）--
+  # ---- 代理（GFW）----
   proxy-gfw:
     type: http
     behavior: classical
@@ -246,7 +278,7 @@ rule-providers:
 rules:
   # ---- 1. 自定义规则（最高优先级）----
   - RULE-SET,custom-direct,DIRECT
-  - RULE-SET,custom-proxy,🚀 代理出口
+  - RULE-SET,custom-proxy,Proxy
 
   # ---- 2. 局域网直连 ----
   - RULE-SET,lan,DIRECT
@@ -258,37 +290,44 @@ rules:
   - RULE-SET,reject-domain,REJECT
 
   # ---- 4. AI 服务走代理 ----
-  - RULE-SET,openai,🚀 代理出口
-  - RULE-SET,claude,🚀 代理出口
-  - RULE-SET,gemini,🚀 代理出口
-  - RULE-SET,copilot,🚀 代理出口
+  - RULE-SET,openai,Proxy
+  - RULE-SET,claude,Proxy
+  - RULE-SET,gemini,Proxy
+  - RULE-SET,copilot,Proxy
 
   # ---- 5. 流媒体走代理 ----
-  - RULE-SET,netflix,🚀 代理出口
-  - RULE-SET,youtube,🚀 代理出口
-  - RULE-SET,spotify,🚀 代理出口
-  - RULE-SET,tiktok,🚀 代理出口
-  - RULE-SET,proxy-media,🚀 代理出口
+  - RULE-SET,netflix,Proxy
+  - RULE-SET,youtube,Proxy
+  - RULE-SET,spotify,Proxy
+  - RULE-SET,tiktok,Proxy
+  - RULE-SET,proxy-media,Proxy
 
-  # ---- 6. Telegram 走代理 ----
-  - RULE-SET,telegram,🚀 代理出口
+  # ---- 6. 社交走代理 ----
+  - RULE-SET,telegram,Proxy
+  - RULE-SET,twitter,Proxy
 
-  # ---- 7. 苹果服务直连 ----
+  # ---- 7. 开发工具走代理 ----
+  - RULE-SET,github,Proxy
+
+  # ---- 8. 苹果服务直连 ----
   - RULE-SET,apple,DIRECT
 
-  # ---- 8. 国内直连 ----
+  # ---- 9. 微软服务直连 ----
+  - RULE-SET,microsoft,DIRECT
+
+  # ---- 10. 国内直连 ----
   - RULE-SET,google-cn,DIRECT
   - RULE-SET,china-domain,DIRECT
   - RULE-SET,china-company-ip,DIRECT
   - RULE-SET,china-ip,DIRECT
   - RULE-SET,download,DIRECT
 
-  # ---- 9. GFW 走代理 ----
-  - RULE-SET,proxy-gfw,🚀 代理出口
-  - RULE-SET,proxy-lite,🚀 代理出口
+  # ---- 11. GFW 走代理 ----
+  - RULE-SET,proxy-gfw,Proxy
+  - RULE-SET,proxy-lite,Proxy
 
-  # ---- 10. 兜底 GEOIP 补漏 ----
+  # ---- 12. GEOIP 补漏 ----
   - GEOIP,CN,DIRECT
 
-  # ---- 11. 默认直连 ----
-  - MATCH,DIRECT
+  # ---- 13. 兜底：漏网之鱼（可在 ClashVerge 灵活切换）----
+  - MATCH,漏网之鱼
