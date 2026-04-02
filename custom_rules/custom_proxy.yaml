@@ -1,13 +1,12 @@
-payload:
-  - DOMAIN-SUFFIX,claude.com
-  - DOMAIN-SUFFIX,claudeusercontent.com
-  - DOMAIN-SUFFIX,us-east-1.amazonaws.com
-  - DOMAIN-SUFFIX,openai.com
-  - DOMAIN-SUFFIX,sketch.com
-  - DOMAIN-SUFFIX,sketch.cloud
-  - DOMAIN-SUFFIX,atlassian.net
-  - DOMAIN-SUFFIX,banofinancial.com
-  - DOMAIN-SUFFIX,nium.com
-  - DOMAIN-SUFFIX,v2ex.com
-  - DOMAIN-SUFFIX,github.com
-  - DOMAIN-SUFFIX,redisson.org
+DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,claudeusercontent.com
+DOMAIN-SUFFIX,us-east-1.amazonaws.com
+DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,sketch.com
+DOMAIN-SUFFIX,sketch.cloud
+DOMAIN-SUFFIX,atlassian.net
+DOMAIN-SUFFIX,banofinancial.com
+DOMAIN-SUFFIX,nium.com
+DOMAIN-SUFFIX,v2ex.com
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,redisson.org

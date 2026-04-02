@@ -1,13 +1,12 @@
-payload:
-  - DOMAIN-SUFFIX,bano.co
-  - DOMAIN-SUFFIX,banotrade.com
-  - DOMAIN-SUFFIX,66zhang.com
-  - DOMAIN-SUFFIX,llvip.net
-  - DOMAIN-SUFFIX,build.app
-  - DOMAIN-SUFFIX,boltfaas.com
-  - DOMAIN-SUFFIX,boltbaas.com
-  - DOMAIN-SUFFIX,baidu.com
-  - DOMAIN-SUFFIX,apple.com
-  - DOMAIN-SUFFIX,aaa.net
-  - DOMAIN-SUFFIX,appsflyer.com
-  - IP-CIDR,54.253.161.136/32,no-resolve
+DOMAIN-SUFFIX,bano.co
+DOMAIN-SUFFIX,banotrade.com
+DOMAIN-SUFFIX,66zhang.com
+DOMAIN-SUFFIX,llvip.net
+DOMAIN-SUFFIX,build.app
+DOMAIN-SUFFIX,boltfaas.com
+DOMAIN-SUFFIX,boltbaas.com
+DOMAIN-SUFFIX,baidu.com
+DOMAIN-SUFFIX,apple.com
+DOMAIN-SUFFIX,aaa.net
+DOMAIN-SUFFIX,appsflyer.com
+IP-CIDR,54.253.161.136/32,no-resolve
