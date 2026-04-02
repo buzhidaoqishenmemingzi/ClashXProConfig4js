@@ -88,6 +88,7 @@ rule-providers:
   custom-direct:
     type: http
     behavior: classical
+    format: yaml
     proxy: Proxy
     url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_direct.yaml"
     path: ./ruleset/custom-direct.yaml
@@ -95,6 +96,7 @@ rule-providers:
   custom-proxy:
     type: http
     behavior: classical
+    format: yaml
     proxy: Proxy
     url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_proxy.yaml"
     path: ./ruleset/custom-proxy.yaml
