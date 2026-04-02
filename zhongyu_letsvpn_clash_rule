@@ -93,6 +93,14 @@ rule-providers:
     url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_direct.yaml"
     path: ./ruleset/custom-direct.yaml
     interval: 86400
+  custom-ai:
+    type: http
+    behavior: classical
+    format: text
+    proxy: Proxy
+    url: "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules/custom_ai.yaml"
+    path: ./ruleset/custom-ai.yaml
+    interval: 86400
   custom-proxy:
     type: http
     behavior: classical
@@ -335,6 +343,7 @@ rule-providers:
 rules:
   # ---- 1. 自定义规则（最高优先级）----
   - RULE-SET,custom-direct,DIRECT
+  - RULE-SET,custom-ai,Proxy
   - RULE-SET,custom-proxy,Proxy
 
   # ---- 2. 局域网直连 ----
