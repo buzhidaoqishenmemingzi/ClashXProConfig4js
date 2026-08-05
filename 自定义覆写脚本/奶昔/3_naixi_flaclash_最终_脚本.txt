@@ -1,0 +1,248 @@
+// Clash Verge 脚本扩展 - 奶昔（naiixi）订阅
+//
+// 定位：作为原始订阅的【补充】。
+//   - proxy-groups：奶昔原始 22 个分组一个不删、名字和图标不改。改动只有三处——
+//     (a) 新增「📺 流媒体」聚合开关；
+//     (b) 八个流媒体子组的首选项指向它（原有选项全部保留在后面）；
+//     (c) 按使用频率重排展示顺序（常用置顶，流媒体等低频沉底）。
+//   - 只补 rule-providers 和 rules：原始订阅只有 7 条规则，22 个分组里有 19 个
+//     一条规则都匹配不到（等于摆设）。本脚本把流量按分类分发到这些已有分组。
+//   - 原始订阅自带的域名规则（机场自身域名、DNS 域名）保留在最高优先级，
+//     只剔除末尾的 GEOIP,CN 和 MATCH，由本脚本重新排在最后。
+//
+// 使用方式：Clash Verge → 订阅右键 → 编辑 → Script → 粘贴此内容 → 保存
+
+function main(config) {
+  // ── 流媒体聚合分组 ────────────────────────────────────────────────────────
+  // Clash 没有「分组文件夹」这种 UI 层级，proxy-groups 在界面上永远是平铺的，
+  // 折叠不了。所以这里做的是【聚合开关】：新增一个「📺 流媒体」组，再把下面
+  // 八个流媒体子组的首选项指向它。以后只切「📺 流媒体」一处，八个全跟着变；
+  // 想单独给某个换节点，进那个子组改就行。规则依旧指向各自子组，不受影响。
+  const STREAM = "📺 流媒体";
+  const STREAM_MEMBERS = [
+    "Netflix", "HBO", "DisneyPlus", "YouTube",
+    "Bahamut", "Bilibili", "MyTVSuper", "Tiktok",
+  ];
+
+  const nodeNames = (config.proxies || []).map(p => p.name);
+
+  config["proxy-groups"] = config["proxy-groups"] || [];
+  config["proxy-groups"].push({
+    name: STREAM,
+    icon: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Streaming.png",
+    url: "http://www.gstatic.com/generate_204",
+    type: "select",
+    proxies: ["Proxies", "🎯Direct", ...nodeNames],
+  });
+
+  // 把八个子组的首选项改成「📺 流媒体」，其余选项原样保留在后面
+  config["proxy-groups"].forEach(gp => {
+    if (!STREAM_MEMBERS.includes(gp.name)) return;
+    gp.proxies = [STREAM, ...(gp.proxies || []).filter(n => n !== STREAM)];
+  });
+
+  // ── 分组名兜底 ────────────────────────────────────────────────────────────
+  // 规则里引用了不存在的分组名，mihomo 会直接拒绝整份配置（订阅加载失败）。
+  // 奶昔以后若改了分组名，这里会自动退回到 Proxies，而不是让配置整体失效。
+  const groupNames = new Set((config["proxy-groups"] || []).map(g => g.name));
+  const g = (name) => (groupNames.has(name) ? name : "Proxies");
+
+  const PROXY   = g("Proxies");
+  const DIRECTG = g("🎯Direct");
+  const FINAL   = g("✈️Final");
+
+  // ── 分组展示顺序 ──────────────────────────────────────────────────────────
+  // 只重排数组顺序，分组对象本身（name / icon / type / proxies）一律不改。
+  // GROUP_ORDER 里列出的按此顺序置顶；没列出的（流媒体等低频分组）按原始顺序
+  // 追加在后面，所以 🎯Direct / ✈️Final 仍然在最末尾。
+  // 想调整顺序只改下面这个数组即可，写了不存在的名字会被自动忽略。
+  const GROUP_ORDER = [
+    "Proxies", "AI", "Google", "Apple", "Telegram",
+    "Microsoft", "Steam", "PlayStation", "Xbox", "Epic",
+    STREAM,  // 聚合开关，排在八个流媒体子组正上方
+  ];
+
+  const allGroups = config["proxy-groups"] || [];
+  const pinned = GROUP_ORDER
+    .map(n => allGroups.find(x => x.name === n))
+    .filter(Boolean);
+  const pinnedNames = new Set(pinned.map(x => x.name));
+  config["proxy-groups"] = [
+    ...pinned,
+    ...allGroups.filter(x => !pinnedNames.has(x.name)),
+  ];
+
+  // ── rule-providers ────────────────────────────────────────────────────────
+  // 规则集要从 GitHub raw 下载，国内直连大概率失败，所以走 Proxies 分组下载。
+  // 若你的 Proxies 节点不稳导致规则集拉不下来，把 DOWNLOAD_VIA 改成 null 即可。
+  const DOWNLOAD_VIA = PROXY;
+
+  const rp = (url, behavior, format) => {
+    const o = { type: "http", behavior, url, interval: 86400, format };
+    if (DOWNLOAD_VIA) o.proxy = DOWNLOAD_VIA;
+    return o;
+  };
+
+  const classical_text = (url) => rp(url, "classical", "text");
+  const domain_yaml    = (url) => rp(url, "domain", "yaml");
+
+  const ACL    = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash";
+  const BM7    = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash";
+  const CUSTOM = "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules";
+  const LOYAL  = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release";
+
+  config["rule-providers"] = {
+    // 1. 自定义规则
+    custom_direct: classical_text(`${CUSTOM}/custom_direct.yaml`),
+    custom_ai:     classical_text(`${CUSTOM}/custom_ai.yaml`),
+    custom_proxy:  classical_text(`${CUSTOM}/custom_proxy.yaml`),
+
+    // 2. 局域网
+    LocalAreaNetwork: classical_text(`${ACL}/LocalAreaNetwork.list`),
+
+    // 3. 广告屏蔽
+    BanAD:            classical_text(`${ACL}/BanAD.list`),
+    BanProgramAD:     classical_text(`${ACL}/BanProgramAD.list`),
+    BanEasyListChina: classical_text(`${ACL}/BanEasyListChina.list`),
+    reject:           domain_yaml(`${LOYAL}/reject.txt`),
+
+    // 4. AI 服务
+    OpenAI:  classical_text(`${BM7}/OpenAI/OpenAI.list`),
+    Claude:  classical_text(`${BM7}/Claude/Claude.list`),
+    Gemini:  classical_text(`${BM7}/Gemini/Gemini.list`),
+    Copilot: classical_text(`${BM7}/Copilot/Copilot.list`),
+
+    // 5. 流媒体（每个都有对应的原始分组）
+    Netflix:    classical_text(`${BM7}/Netflix/Netflix.list`),
+    Disney:     classical_text(`${BM7}/Disney/Disney.list`),
+    HBO:        classical_text(`${BM7}/HBO/HBO.list`),
+    Bahamut:    classical_text(`${BM7}/Bahamut/Bahamut.list`),
+    myTVSUPER:  classical_text(`${BM7}/myTVSUPER/myTVSUPER.list`),
+    YouTube:    classical_text(`${BM7}/YouTube/YouTube.list`),
+    TikTok:     classical_text(`${BM7}/TikTok/TikTok.list`),
+    BiliBili:   classical_text(`${BM7}/BiliBili/BiliBili.list`),
+    Spotify:    classical_text(`${BM7}/Spotify/Spotify.list`),
+    ProxyMedia: classical_text(`${ACL}/ProxyMedia.list`),
+
+    // 6. 社交
+    Telegram: classical_text(`${BM7}/Telegram/Telegram.list`),
+    Twitter:  classical_text(`${BM7}/Twitter/Twitter.list`),
+
+    // 7. 学术 / 加密货币
+    Scholar:        classical_text(`${BM7}/Scholar/Scholar.list`),
+    Cryptocurrency: classical_text(`${BM7}/Cryptocurrency/Cryptocurrency.list`),
+
+    // 8. 开发工具（原始配置无对应分组，走 Proxies）
+    GitHub: classical_text(`${BM7}/GitHub/GitHub.list`),
+
+    // 9. 苹果 / 微软 / 谷歌
+    Apple:     classical_text(`${BM7}/Apple/Apple.list`),
+    Microsoft: classical_text(`${BM7}/Microsoft/Microsoft.list`),
+    Google:    classical_text(`${BM7}/Google/Google.list`),
+
+    // 10. 游戏平台
+    Steam:       classical_text(`${BM7}/Steam/Steam.list`),
+    Epic:        classical_text(`${BM7}/Epic/Epic.list`),
+    Xbox:        classical_text(`${BM7}/Xbox/Xbox.list`),
+    PlayStation: classical_text(`${BM7}/PlayStation/PlayStation.list`),
+    Game:        classical_text(`${ACL}/Game.list`),
+
+    // 11. 国内直连
+    GoogleCN:       classical_text(`${ACL}/GoogleCN.list`),
+    ChinaDomain:    classical_text(`${ACL}/ChinaDomain.list`),
+    ChinaCompanyIp: classical_text(`${ACL}/ChinaCompanyIp.list`),
+    ChinaIp:        classical_text(`${ACL}/ChinaIp.list`),
+    Download:       classical_text(`${ACL}/Download.list`),
+
+    // 12. 代理（GFW 域名）
+    ProxyGFWlist: classical_text(`${ACL}/ProxyGFWlist.list`),
+    ProxyLite:    classical_text(`${ACL}/ProxyLite.list`),
+  };
+
+  // ── 保留原始订阅自带的规则 ────────────────────────────────────────────────
+  // 奶昔头部那几条 DOMAIN-SUFFIX 是机场自身域名和 DNS 域名，必须保持最高优先级，
+  // 否则会被后面的 ChinaDomain / GFWlist 抢走。末尾的 GEOIP,CN 和 MATCH 剔除，
+  // 由本脚本重新排在规则链最后。
+  const origin = (config.rules || []).filter(r => {
+    const s = String(r).trim().toUpperCase();
+    return !s.startsWith("MATCH,") && !s.startsWith("GEOIP,CN,");
+  });
+
+  // ── rules ─────────────────────────────────────────────────────────────────
+  config["rules"] = [
+    // 0. 原始订阅自带规则（机场域名 / DNS 域名，最高优先级）
+    ...origin,
+
+    // 1. 自定义规则
+    "RULE-SET,custom_direct," + DIRECTG,
+    "RULE-SET,custom_ai," + g("AI"),
+    "RULE-SET,custom_proxy," + PROXY,
+
+    // 2. 局域网直连
+    "RULE-SET,LocalAreaNetwork," + DIRECTG,
+
+    // 3. 广告屏蔽（原始配置无广告分组，直接 REJECT）
+    "RULE-SET,BanAD,REJECT",
+    "RULE-SET,BanProgramAD,REJECT",
+    "RULE-SET,BanEasyListChina,REJECT",
+    "RULE-SET,reject,REJECT",
+
+    // 4. AI 服务（必须排在 Google/Microsoft 之前，否则 gemini/copilot 会被抢走）
+    "RULE-SET,OpenAI," + g("AI"),
+    "RULE-SET,Claude," + g("AI"),
+    "RULE-SET,Gemini," + g("AI"),
+    "RULE-SET,Copilot," + g("AI"),
+
+    // 5. 流媒体
+    "RULE-SET,Netflix," + g("Netflix"),
+    "RULE-SET,Disney," + g("DisneyPlus"),
+    "RULE-SET,HBO," + g("HBO"),
+    "RULE-SET,Bahamut," + g("Bahamut"),
+    "RULE-SET,myTVSUPER," + g("MyTVSuper"),
+    "RULE-SET,YouTube," + g("YouTube"),
+    "RULE-SET,TikTok," + g("Tiktok"),
+    "RULE-SET,BiliBili," + g("Bilibili"),
+    "RULE-SET,Spotify," + PROXY,
+    "RULE-SET,ProxyMedia," + PROXY,
+
+    // 6. 社交
+    "RULE-SET,Telegram," + g("Telegram"),
+    "RULE-SET,Twitter," + PROXY,
+
+    // 7. 学术 / 加密货币
+    "RULE-SET,Scholar," + g("Scholar"),
+    "RULE-SET,Cryptocurrency," + g("Crypto"),
+
+    // 8. 开发工具（无对应分组，归 Proxies）
+    "RULE-SET,GitHub," + PROXY,
+
+    // 9. 游戏平台（排在 Microsoft 之前，否则 Xbox 会被 Microsoft 抢走）
+    "RULE-SET,Steam," + g("Steam"),
+    "RULE-SET,Epic," + g("Epic"),
+    "RULE-SET,Xbox," + g("Xbox"),
+    "RULE-SET,PlayStation," + g("PlayStation"),
+    "RULE-SET,Game," + PROXY,
+
+    // 10. 苹果 / 微软 / 谷歌
+    "RULE-SET,Apple," + g("Apple"),
+    "RULE-SET,Microsoft," + g("Microsoft"),
+    "RULE-SET,Google," + g("Google"),
+
+    // 11. 国内直连
+    "RULE-SET,GoogleCN," + DIRECTG,
+    "RULE-SET,ChinaDomain," + DIRECTG,
+    "RULE-SET,ChinaCompanyIp," + DIRECTG,
+    "RULE-SET,ChinaIp," + DIRECTG,
+    "RULE-SET,Download," + DIRECTG,
+
+    // 12. 代理（GFW 域名，兜底前的最后一层）
+    "RULE-SET,ProxyGFWlist," + PROXY,
+    "RULE-SET,ProxyLite," + PROXY,
+
+    // 13. 兜底
+    "GEOIP,CN," + DIRECTG,
+    "MATCH," + FINAL,
+  ];
+
+  return config;
+}

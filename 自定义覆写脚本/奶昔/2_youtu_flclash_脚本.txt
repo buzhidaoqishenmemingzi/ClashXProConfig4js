@@ -1,0 +1,238 @@
+// Clash Verge 脚本扩展 - Meiying 订阅
+// 分组与规则集完全遵循 unified_config.ini：
+// https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/unified_config.ini
+//
+// 使用方式：Clash Verge → 订阅右键 → 编辑 → Script → 粘贴此内容 → 保存
+
+function main(config) {
+  const proxies = config.proxies || [];
+  const all = proxies.map(p => p.name);
+
+  // ── proxy-groups（完全对应 unified_config.ini 的 custom_proxy_group 定义）──
+
+  config["proxy-groups"] = [
+    // 节点选择：手动，含自动选优 + DIRECT + 全部节点
+    {
+      name: "🚀 节点选择",
+      type: "select",
+      proxies: ["♻️ 自动选优", "DIRECT", ...all],
+    },
+    // 自动选优：url-test，含全部节点
+    {
+      name: "♻️ 自动选优",
+      type: "url-test",
+      url: "http://www.gstatic.com/generate_204",
+      interval: 300,
+      tolerance: 50,
+      proxies: all.length > 0 ? all : ["DIRECT"],
+    },
+    // AI 服务：手动，含节点选择 + 自动选优 + DIRECT + 全部节点
+    {
+      name: "🤖 AI 服务",
+      type: "select",
+      proxies: ["🚀 节点选择", "♻️ 自动选优", "DIRECT", ...all],
+    },
+    // 流媒体：手动，含节点选择 + 自动选优 + DIRECT + 全部节点
+    {
+      name: "📺 流媒体",
+      type: "select",
+      proxies: ["🚀 节点选择", "♻️ 自动选优", "DIRECT", ...all],
+    },
+    // Telegram：手动，含节点选择 + 自动选优 + 全部节点（无 DIRECT）
+    {
+      name: "💬 Telegram",
+      type: "select",
+      proxies: ["🚀 节点选择", "♻️ 自动选优", ...all],
+    },
+    // Twitter/X：手动，含节点选择 + 自动选优 + 全部节点（无 DIRECT）
+    {
+      name: "🐦 Twitter/X",
+      type: "select",
+      proxies: ["🚀 节点选择", "♻️ 自动选优", ...all],
+    },
+    // 开发工具：手动，含节点选择 + 自动选优 + DIRECT + 全部节点
+    {
+      name: "👨‍💻 开发工具",
+      type: "select",
+      proxies: ["🚀 节点选择", "♻️ 自动选优", "DIRECT", ...all],
+    },
+    // 苹果服务：手动，仅 DIRECT + 节点选择（默认直连）
+    {
+      name: "🍎 苹果服务",
+      type: "select",
+      proxies: ["DIRECT", "🚀 节点选择"],
+    },
+    // 微软服务：手动，仅 DIRECT + 节点选择（默认直连）
+    {
+      name: "🪟 微软服务",
+      type: "select",
+      proxies: ["DIRECT", "🚀 节点选择"],
+    },
+    // 游戏平台：手动，DIRECT + 节点选择 + 自动选优 + 全部节点（默认直连）
+    {
+      name: "🎮 游戏平台",
+      type: "select",
+      proxies: ["DIRECT", "🚀 节点选择", "♻️ 自动选优", ...all],
+    },
+    // 广告拦截：手动，仅 REJECT + DIRECT
+    {
+      name: "🛡️ 广告拦截",
+      type: "select",
+      proxies: ["REJECT", "DIRECT"],
+    },
+    // 漏网之鱼：手动，DIRECT + 节点选择 + 自动选优（默认直连）
+    {
+      name: "🐟 漏网之鱼",
+      type: "select",
+      proxies: ["DIRECT", "🚀 节点选择", "♻️ 自动选优"],
+    },
+  ];
+
+  // ── rule-providers（对应 unified_config.ini 的 ruleset 定义）────────────
+
+  // ACL4SSR / blackmatrix7 的 .list 文件：纯文本 classical 规则
+  // Loyalsoldier 的 reject.txt：YAML domain 列表（含 payload: 头）
+  // 自定义 .yaml 文件：YAML classical 规则（含 payload: 头）
+
+  const rp = (url, behavior, format) => ({
+    type: "http",
+    behavior,
+    url,
+    interval: 86400,
+    format,
+  });
+
+  const classical_text = (url) => rp(url, "classical", "text");
+  const classical_yaml = (url) => rp(url, "classical", "yaml");
+  const domain_yaml    = (url) => rp(url, "domain", "yaml");
+
+  const ACL = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash";
+  const BM7 = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash";
+  const CUSTOM = "https://raw.githubusercontent.com/buzhidaoqishenmemingzi/ClashXProConfig4js/master/custom_rules";
+  const LOYAL = "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release";
+
+  config["rule-providers"] = {
+    // 1. 自定义规则
+    custom_direct:  classical_text(`${CUSTOM}/custom_direct.yaml`),
+    custom_ai:      classical_text(`${CUSTOM}/custom_ai.yaml`),
+    custom_proxy:   classical_text(`${CUSTOM}/custom_proxy.yaml`),
+
+    // 2. 局域网直连
+    LocalAreaNetwork: classical_text(`${ACL}/LocalAreaNetwork.list`),
+
+    // 3. 广告屏蔽
+    BanAD:            classical_text(`${ACL}/BanAD.list`),
+    BanProgramAD:     classical_text(`${ACL}/BanProgramAD.list`),
+    BanEasyListChina: classical_text(`${ACL}/BanEasyListChina.list`),
+    reject:           domain_yaml(`${LOYAL}/reject.txt`),
+
+    // 4. AI 服务
+    OpenAI:  classical_text(`${BM7}/OpenAI/OpenAI.list`),
+    Claude:  classical_text(`${BM7}/Claude/Claude.list`),
+    Gemini:  classical_text(`${BM7}/Gemini/Gemini.list`),
+    Copilot: classical_text(`${BM7}/Copilot/Copilot.list`),
+
+    // 5. 流媒体
+    Netflix:    classical_text(`${BM7}/Netflix/Netflix.list`),
+    YouTube:    classical_text(`${BM7}/YouTube/YouTube.list`),
+    Spotify:    classical_text(`${BM7}/Spotify/Spotify.list`),
+    TikTok:     classical_text(`${BM7}/TikTok/TikTok.list`),
+    ProxyMedia: classical_text(`${ACL}/ProxyMedia.list`),
+
+    // 6. 社交
+    Telegram: classical_text(`${ACL}/Telegram.list`),
+    Twitter:  classical_text(`${BM7}/Twitter/Twitter.list`),
+
+    // 7. 开发工具
+    GitHub:    classical_text(`${BM7}/GitHub/GitHub.list`),
+    Atlassian: classical_text(`${BM7}/Atlassian/Atlassian.list`),
+
+    // 8. 苹果服务
+    Apple: classical_text(`${ACL}/Apple.list`),
+
+    // 9. 微软服务
+    Microsoft: classical_text(`${BM7}/Microsoft/Microsoft.list`),
+
+    // 10. 游戏平台
+    Steam: classical_text(`${BM7}/Steam/Steam.list`),
+    Epic:  classical_text(`${BM7}/Epic/Epic.list`),
+    Game:  classical_text(`${ACL}/Game.list`),
+
+    // 11. 国内直连
+    GoogleCN:       classical_text(`${ACL}/GoogleCN.list`),
+    ChinaDomain:    classical_text(`${ACL}/ChinaDomain.list`),
+    ChinaCompanyIp: classical_text(`${ACL}/ChinaCompanyIp.list`),
+    ChinaIp:        classical_text(`${ACL}/ChinaIp.list`),
+    Download:       classical_text(`${ACL}/Download.list`),
+
+    // 12. 代理（GFW 域名）
+    ProxyGFWlist: classical_text(`${ACL}/ProxyGFWlist.list`),
+    ProxyLite:    classical_text(`${ACL}/ProxyLite.list`),
+  };
+
+  // ── rules（按优先级，完全对应 unified_config.ini 的 ruleset 排列）──────────
+
+  config["rules"] = [
+    // 1. 自定义规则（最高优先级）
+    "RULE-SET,custom_direct,DIRECT",
+    "RULE-SET,custom_ai,🤖 AI 服务",
+    "RULE-SET,custom_proxy,🚀 节点选择",
+
+    // 2. 局域网直连
+    "RULE-SET,LocalAreaNetwork,DIRECT",
+
+    // 3. 广告屏蔽
+    "RULE-SET,BanAD,🛡️ 广告拦截",
+    "RULE-SET,BanProgramAD,🛡️ 广告拦截",
+    "RULE-SET,BanEasyListChina,🛡️ 广告拦截",
+    "RULE-SET,reject,🛡️ 广告拦截",
+
+    // 4. AI 服务
+    "RULE-SET,OpenAI,🤖 AI 服务",
+    "RULE-SET,Claude,🤖 AI 服务",
+    "RULE-SET,Gemini,🤖 AI 服务",
+    "RULE-SET,Copilot,🤖 AI 服务",
+
+    // 5. 流媒体
+    "RULE-SET,Netflix,📺 流媒体",
+    "RULE-SET,YouTube,📺 流媒体",
+    "RULE-SET,Spotify,📺 流媒体",
+    "RULE-SET,TikTok,📺 流媒体",
+    "RULE-SET,ProxyMedia,📺 流媒体",
+
+    // 6. 社交
+    "RULE-SET,Telegram,💬 Telegram",
+    "RULE-SET,Twitter,🐦 Twitter/X",
+
+    // 7. 开发工具
+    "RULE-SET,GitHub,👨‍💻 开发工具",
+    "RULE-SET,Atlassian,👨‍💻 开发工具",
+
+    // 8. 苹果服务
+    "RULE-SET,Apple,🍎 苹果服务",
+
+    // 9. 微软服务
+    "RULE-SET,Microsoft,🪟 微软服务",
+
+    // 10. 游戏平台
+    "RULE-SET,Steam,🎮 游戏平台",
+    "RULE-SET,Epic,🎮 游戏平台",
+    "RULE-SET,Game,🎮 游戏平台",
+
+    // 11. 国内直连
+    "RULE-SET,GoogleCN,DIRECT",
+    "RULE-SET,ChinaDomain,DIRECT",
+    "RULE-SET,ChinaCompanyIp,DIRECT",
+    "RULE-SET,ChinaIp,DIRECT",
+    "RULE-SET,Download,DIRECT",
+
+    // 12. 代理（GFW 域名）
+    "RULE-SET,ProxyGFWlist,🚀 节点选择",
+    "RULE-SET,ProxyLite,🚀 节点选择",
+
+    // 13. 兜底
+    "MATCH,🐟 漏网之鱼",
+  ];
+
+  return config;
+}

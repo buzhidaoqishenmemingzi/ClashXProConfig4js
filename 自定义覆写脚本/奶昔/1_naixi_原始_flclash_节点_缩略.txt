@@ -1,0 +1,445 @@
+ipv6: true
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: Rule
+log-level: info
+external-controller: :9090
+unified-delay: true
+sniffer:
+  sniff:
+    TLS: {ports: [443], override-destination: true}
+    HTTP: {ports: [443], override-destination: true}
+  enable: true
+  skip-domain:
+    - Mijia Cloud
+    - dlg.io.mi.com
+  parse-pure-ip: true
+  force-dns-mapping: true
+  override-destination: true
+dns:
+  ipv6: false
+  enable: true
+  listen: 127.0.0.1:7874
+  use-hosts: true
+  proxy-server-nameserver:
+    - udp://127.0.0.1:7874
+  default-nameserver:
+    - 119.28.28.28
+    - 119.29.29.29
+    - 223.5.5.5
+    - 223.6.6.6
+  nameserver:
+    - https://kfzzxcx.com:44443/dns-query/c3761a8d-ee9e-45b9-9e80-a47100a932e1
+    - https://destitute2725.com:44443/dns-query/c3761a8d-ee9e-45b9-9e80-a47100a932e1
+    - https://prolonged3729.com:443/dns-query/c3761a8d-ee9e-45b9-9e80-a47100a932e1
+  fake-ip-range: 198.18.0.1/15
+  fake-ip-filter:
+    - 459f-b414-8fb370623ce7.7az9h713x1.sbs
+    - 32877472a14b.dmdzuspah1.sbs
+    - 49e4-b921-2ce064c1e750.qrdi55e0ic.sbs
+    - 4ca3-97e1-3cf3c107dc83.7az9h713x1.sbs
+    - 441d-a7c9-30def11b5488.7az9h713x1.sbs
+    - 48c9-967f-d08d9de1864e.dmdzuspah1.sbs
+    - 496f-b64c-b05adaff17fb.qrdi55e0ic.sbs
+    - 453e-8260-4eac83af8154.7az9h713x1.sbs
+    - "*.lan"
+    - "*.localdomain"
+    - "*.example"
+    - "*.invalid"
+    - "*.localhost"
+    - "*.test"
+    - "*.local"
+    - "*.home.arpa"
+    - time.*.com
+    - time.*.gov
+    - time.*.edu.cn
+    - time.*.apple.com
+    - time1.*.com
+    - time2.*.com
+    - time3.*.com
+    - time4.*.com
+    - time5.*.com
+    - time6.*.com
+    - time7.*.com
+    - ntp.*.com
+    - ntp1.*.com
+    - ntp2.*.com
+    - ntp3.*.com
+    - ntp4.*.com
+    - ntp5.*.com
+    - ntp6.*.com
+    - ntp7.*.com
+    - "*.time.edu.cn"
+    - "*.ntp.org.cn"
+    - +.pool.ntp.org
+    - time1.cloud.tencent.com
+    - stun.*.*
+    - stun.*.*.*
+    - swscan.apple.com
+    - mesu.apple.com
+    - music.163.com
+    - "*.music.163.com"
+    - "*.126.net"
+    - musicapi.taihe.com
+    - music.taihe.com
+    - songsearch.kugou.com
+    - trackercdn.kugou.com
+    - "*.kuwo.cn"
+    - api-jooxtt.sanook.com
+    - api.joox.com
+    - y.qq.com
+    - "*.y.qq.com"
+    - streamoc.music.tc.qq.com
+    - mobileoc.music.tc.qq.com
+    - isure.stream.qqmusic.qq.com
+    - dl.stream.qqmusic.qq.com
+    - aqqmusic.tc.qq.com
+    - amobile.music.tc.qq.com
+    - localhost.ptlogin2.qq.com
+    - "*.msftconnecttest.com"
+    - "*.msftncsi.com"
+    - "*.xiami.com"
+    - "*.music.migu.cn"
+    - music.migu.cn
+    - +.wotgame.cn
+    - +.wggames.cn
+    - +.wowsgame.cn
+    - +.wargaming.net
+    - "*.*.*.srv.nintendo.net"
+    - "*.*.stun.playstation.net"
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    - "*.ipv6.microsoft.com"
+    - teredo.*.*.*
+    - teredo.*.*
+    - speedtest.cros.wr.pvp.net
+    - +.jjvip8.com
+    - www.douyu.com
+    - activityapi.huya.com
+    - activityapi.huya.com.w.cdngslb.com
+    - www.bilibili.com
+    - api.bilibili.com
+    - a.w.bilicdn1.com
+proxies:
+  - {name: 0.00 G | 200.00 G, server: 40a3-996f-32877472a14b.dmdzuspah1.sbs, port: 2836, type: anytls, client-fingerprint: chrome, idle-session-check-interval: 30, idle-session-timeout: 30, min-idle-session: 0, alpn: [h2], password: 3edcf2a1e69e4658, sni: h265-stream.yximgs.com, skip-cert-verify: true, udp: true, tfo: false}
+  - {name: Traffic Reset：30 Days Left, server: 40a3-996f-32877472a14b.dmdzuspah1.sbs, port: 2836, type: anytls, client-fingerprint: chrome, idle-session-check-interval: 30, idle-session-timeout: 30, min-idle-session: 0, alpn: [h2], password: 3edcf2a1e69e4658, sni: h265-stream.yximgs.com, skip-cert-verify: true, udp: true, tfo: false}
+  - {name: Expire Date：2026/08/07, server: 40a3-996f-32877472a14b.dmdzuspah1.sbs, port: 2836, type: anytls, client-fingerprint: chrome, idle-session-check-interval: 30, idle-session-timeout: 30, min-idle-session: 0, alpn: [h2], password: 3edcf2a1e69e4658, sni: h265-stream.yximgs.com, skip-cert-verify: true, udp: true, tfo: false}
+  - {name: 🇭🇰 Hong Kong 01, server: 40a3-996f-32877472a14b.dmdzuspah1.sbs, port: 2836, type: anytls, client-fingerprint: chrome, idle-session-check-interval: 30, idle-session-timeout: 30, min-idle-session: 0, alpn: [h2], password: 3edcf2a1e69e4658, sni: h265-stream.yximgs.com, skip-cert-verify: true, udp: true, tfo: false}
+  - {name: 🇭🇰 Hong Kong 02, server: 40a3-996f-32877472a14b.dmdzuspah1.sbs, port: 7986, type: anytls, client-fingerprint: chrome, idle-session-check-interval: 30, idle-session-timeout: 30, min-idle-session: 0, alpn: [h2], password: 3edcf2a1e69e4658, sni: h265-stream.yximgs.com, skip-cert-verify: true, udp: true, tfo: false}
+  - {name: 🇭🇰 Hong Kong 03, server: 40a3-996f-32877472a14b.dmdzuspah1.sbs, port: 7283, type: anytls, client-fingerprint: chrome, idle-session-check-interval: 30, idle-session-timeout: 30, min-idle-session: 0, alpn: [h2], password: 3edcf2a1e69e4658, sni: h265-stream.yximgs.com, skip-cert-verify: true, udp: true, tfo: false}
+
+proxy-groups:
+  - name: Proxies
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Proxy.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Netflix
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Netflix.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: HBO
+    icon: https://raw.githubusercontent.com/mjk0108/surge-icon/main/HBO_Max.png.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: DisneyPlus
+    icon: https://www.naiixi.com/DisneyPlus.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: YouTube
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/YouTube.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Bahamut
+    icon: https://raw.githubusercontent.com/mutu5012/Script-rule-icon/main/icon/lige47/lige47/bahamute.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Bilibili
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/BiliBili.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - 🎯Direct
+      - Proxies
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: MyTVSuper
+    icon: https://www.naiixi.com/images/myTVSUPER.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: AI
+    icon: https://raw.githubusercontent.com/mutu5012/Script-rule-icon/main/icon/fmz200/chxm1023/ChatGPT4.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Telegram
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Telegram.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Crypto
+    icon: https://www.naiixi.com/Crypto.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Steam
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/color/steam.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Epic
+    icon: https://www.naiixi.com/Epic.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Xbox
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Xbox.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: PlayStation
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/PlayStation_1.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Microsoft
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Microsoft.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - 🎯Direct
+      - Proxies
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Scholar
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Scholar.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Apple
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/Apple.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - 🎯Direct
+      - Proxies
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Google
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/color/google.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: Tiktok
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/TikTok_1.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+
+  - name: 🎯Direct
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Direct.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - DIRECT
+      - Proxies
+  - name: ✈️Final
+    icon: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/icon/qure/color/Final.png
+    url: http://www.gstatic.com/generate_204
+    type: select
+    proxies:
+      - Proxies
+      - 🎯Direct
+      - 0.00 G | 200.00 G
+      - Traffic Reset：30 Days Left
+      - Expire Date：2026/08/07
+      - 🇭🇰 Hong Kong 01
+      - 🇭🇰 Hong Kong 02
+      - 🇭🇰 Hong Kong 03
+ 
+rules:
+  - DOMAIN-SUFFIX,push.apple.com,Proxies
+  - DOMAIN-SUFFIX,ping0.cc,🎯Direct
+  - DOMAIN-SUFFIX,kfzzxcx.com,🎯Direct
+  - DOMAIN-SUFFIX,durable0762.com,🎯Direct
+  - DOMAIN-SUFFIX,delirium9599.com,🎯Direct
+
+  - GEOIP,CN,🎯Direct
+  - MATCH,✈️Final
+hosts:
+  12589602-cf7e-459f-b414-8fb370623ce7.7az9h713x1.sbs: 110c2662-328f-441d-a7c9-30def11b5488.7az9h713x1.sbs
+  22e5d191d-f563-40a3-996f-32877472a14b.dmdzuspah1.sbs: 9387c80a-0478-48c9-967f-d08d9de1864e.dmdzuspah1.sbs
+  32f1727d-4a66-49e4-b921-2ce064c1e750.qrdi55e0ic.sbs: 3c681632-cf3b-496f-b64c-b05adaff17fb.qrdi55e0ic.sbs
+  
